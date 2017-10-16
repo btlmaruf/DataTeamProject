@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="stylesheet" href="./lib/angular-material/angular-material.min.css">
+    <link href="./lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/myCss.css">
+</head>
+<script src="./lib/angular/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-aria.min.js"></script>
+<script src="./lib/angular-material/angular-material.min.js"></script>
+<script>
+    var app = angular.module('client', ['ngMaterial'])
+        .config(function ($httpProvider) {
+
+        });
+
+</script>
+<script src="./service.js"></script>
+<script src="./controller.js"></script>
+
+<body ng-app="client">
+    <div ng-controller="orderController as ctrl">
+        <md-toolbar class="md-warn">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button">
+                    <md-icon md-font-icon="fa-line-chart" class="fa"></md-icon>
+                </md-button>
+                <h2 class="md-flex">Order List</h2>
+            </div>
+        </md-toolbar>
+        <md-content flex layout-padding>
+            <md-button class="md-warn" ng-click="createOrder($event)">
+                + New Order
+            </md-button>
+            <table>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Order Cost</th>
+                    <th>Ordered Item</th>
+                    <th>Customer Address</th>
+                    <th>Order Date</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="order in orderList">
+                    <td>{{order.companyName}}</td>
+                    <td>{{order.orderCost}}</td>
+                    <td>{{order.orderedItem}}</td>
+                    <td>{{order.customerAddress}}</td>
+                    <td>{{order.orderDate}}</td>
+                    <td>
+                        <md-button class="md-icon-button">
+                            <md-icon md-font-icon="fa-edit" class="fa fa-sm"></md-icon>
+                        </md-button>
+                    </td>
+                    <td>
+                        <md-button class="md-icon-button" ng-click="deleteOrder(order.orderId)">
+                            <md-icon md-font-icon="fa-trash" class="fa fa-sm"></md-icon>
+                        </md-button>
+                    </td>
+                </tr>
+            </table>
+        </md-content>
+    </div>
+    <script type="text/ng-template" id="createOrder.html">
+        <md-content flex layout-padding>
+            test111
+        </md-content>
+    </script>
+</body>
+
+</html>
