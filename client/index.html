@@ -11,6 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-aria.min.js"></script>
 <script src="./lib/angular-material/angular-material.min.js"></script>
+<script src="./lib/highcharts/js/highstock.js"></script>
 <script>
     var app = angular.module('client', ['ngMaterial'])
         .config(function ($httpProvider) {
@@ -25,7 +26,7 @@
     <div ng-controller="orderController as ctrl">
         <md-toolbar class="md-warn">
             <div class="md-toolbar-tools">
-                <md-button class="md-icon-button">
+                <md-button class="md-icon-button" ng-click="createChart($event)">
                     <md-icon md-font-icon="fa-line-chart" class="fa"></md-icon>
                 </md-button>
                 <h2 class="md-flex">Order List</h2>
@@ -95,6 +96,13 @@
                 <md-button class="md-warn" ng-click="createOrder()">
                     <md-icon md-font-icon="fa-save" class="fa fa-sm"></md-icon>Save
                 </md-button>
+            </md-content>
+        </md-dialog>
+    </script>
+    <script type="text/ng-template" id="lineChart.html">
+        <md-dialog>
+            <md-content flex layout-padding id="container">
+                
             </md-content>
         </md-dialog>
     </script>
