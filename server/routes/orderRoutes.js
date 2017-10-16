@@ -9,9 +9,16 @@ var routes = function (Order) {
         //create order
         .post(function (req, res) {
             var order = new Order(req.body);
-            order.save();
-            console.log('Get: ' + new Date());
-            res.status(201).send(order);
+            order.save(function (err) {
+                if (err) {
+                    console.log(err);
+                    return;
+                } else {
+                    console.log('post: ' + new Date());
+                    res.status(201).send(order);
+                }
+            });
+
 
         })
         //get all orders
@@ -66,7 +73,7 @@ var routes = function (Order) {
         })
         //patch by id
         .patch(function (req, res) {
-            _.forIn(req.body, function (key, value) {
+            _.forIn(req.body, function (value,key) {
                 if (key == 'orderId') {
                     delete req.body.orderId;
                 } else {

@@ -32,7 +32,7 @@
             </div>
         </md-toolbar>
         <md-content flex layout-padding>
-            <md-button class="md-warn" ng-click="createOrder($event)">
+            <md-button class="md-warn" ng-click="addEditOrder({},$event)">
                 + New Order
             </md-button>
             <table>
@@ -52,7 +52,7 @@
                     <td>{{order.customerAddress}}</td>
                     <td>{{order.orderDate}}</td>
                     <td>
-                        <md-button class="md-icon-button">
+                        <md-button class="md-icon-button" ng-click="addEditOrder(order,$event)">
                             <md-icon md-font-icon="fa-edit" class="fa fa-sm"></md-icon>
                         </md-button>
                     </td>
@@ -66,9 +66,37 @@
         </md-content>
     </div>
     <script type="text/ng-template" id="createOrder.html">
-        <md-content flex layout-padding>
-            test111
-        </md-content>
+        <md-dialog>
+            <md-content flex layout-padding>
+                <h2 class="md-flex">Add/Edit Order</h2>
+                <md-input-container class="md-block">
+                    <label>Company Name</label>
+                    <input name="companyName" ng-model="model.companyName">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Order Cost</label>
+                    <input name="orderCost" type="number" ng-model="model.orderCost">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Ordered Item</label>
+                    <input name="orderedItem" type="number" ng-model="model.orderedItem">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Customer Address</label>
+                    <input name="customerAddress" ng-model="model.customerAddress">
+                </md-input-container>
+                <!--<md-input-container class="md-block">
+                    <label>Order Date (dd/MM/yyyy)</label>
+                    <input name="orderDate" ng-model="model.orderDate">
+                </md-input-container>-->
+                <md-button class="md-warn" ng-click="cancel()">
+                    <md-icon md-font-icon="fa-close" class="fa fa-sm"></md-icon>Cancel
+                </md-button>
+                <md-button class="md-warn" ng-click="createOrder()">
+                    <md-icon md-font-icon="fa-save" class="fa fa-sm"></md-icon>Save
+                </md-button>
+            </md-content>
+        </md-dialog>
     </script>
 </body>
 

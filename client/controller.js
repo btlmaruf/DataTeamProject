@@ -13,23 +13,50 @@ app.controller('orderController', function ($scope, $rootScope, $mdDialog, apiSe
         })
     }
 
-    $scope.createOrder = function (event) {
+    $scope.addEditOrder = function (model, event) {
+
         $mdDialog.show({
             controller: addUpdateOrderController,
             templateUrl: 'createOrder.html',
             parent: angular.element(document.body),
-            targetEvent: ev,
+            targetEvent: event,
             clickOutsideToClose: true,
-            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+            locals: { dataToPass: model }
         })
-            .then(function (answer) {
-               // $scope.status = 'You said the information was "' + answer + '".';
-            }, function () {
-               // $scope.status = 'You cancelled the dialog.';
+            .then(function (result) { //mdDialog hide callback
+
+                if (model.orderId) { //update
+                    apiService.PatchData('order', result, function(updatedOrder){
+                        console.log(updatedOrder);
+                    })
+                } else { // create
+                    apiService.PostData('order', result, function (createdOrder) {
+                        $scope.orderList.push(createdOrder);
+                    })
+                }
+
+            }, function () { //mdDialog cancel callback
+
             });
+
+
+    }
+
+    function addUpdateOrderController($scope, $mdDialog, dataToPass) {
+
+        $scope.model = dataToPass;
+        $scope.createOrder = function () {
+            $scope.model.orderDate = new Date();
+            $mdDialog.hide($scope.model);
+        }
+
+        $scope.cancel = function(){
+            $mdDialog.cancel();
+        }
+
     }
 });
 
 app.controller('addUpdateOrderController', function ($scope, $rootScope, $mdDialog, apiService) {
-    
+
 })

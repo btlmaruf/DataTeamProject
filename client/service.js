@@ -38,6 +38,18 @@ app.service('apiService', function ($http, $q, $rootScope) {
                     console.log(status);
                     callback();
                 });
+        },
+        PatchData: function (request, data, callback) {
+            $http({
+                url: apiURL + request + '/' + data.orderId,
+                headers: { "Content-Type": "application/json" },
+                method: "PATCH",
+                dataType: 'JSON',
+                data: data
+            })
+                .then(function (response, status, headers, config) {
+                    callback(response.data);
+                });
         }
     }
 
