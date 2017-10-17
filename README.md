@@ -11,7 +11,8 @@ Repo for the sample AngularJs and Node.js client-server project
 ### Client
 * AngularJS
 * Angular Material
-* Highcharts and Jquery
+* Highcharts 
+* Lodash 
 ## Build Instructions
 ### Server
 * Install dependencies for the server project as listed above

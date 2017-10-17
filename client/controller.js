@@ -2,7 +2,16 @@ app.controller('orderController', function ($scope, $rootScope, $mdDialog, apiSe
 
     $scope.getOrderList = function () {
         apiService.GetData('order', function (data) {
+
             $scope.orderList = data;
+
+            //format data for chart
+            var chartData = {xAxis: [], values: []};
+            _.forEach(_.orderBy(data, 'orderDate', 'asc'), function(x) {
+                chartData.xAxis.push(x.orderDate);
+                chartData.values.push(x.orderedItem);
+            });
+            $scope.createChart(chartData);
         });
     }
     $scope.getOrderList();
@@ -31,7 +40,8 @@ app.controller('orderController', function ($scope, $rootScope, $mdDialog, apiSe
                     })
                 } else { // create
                     apiService.PostData('order', result, function (createdOrder) {
-                        $scope.orderList.push(createdOrder);
+                        //$scope.orderList.push(createdOrder);
+                        $scope.getOrderList();
                     })
                 }
 
@@ -40,43 +50,21 @@ app.controller('orderController', function ($scope, $rootScope, $mdDialog, apiSe
             });
     }
 
-    $scope.createChart = function (event) {
-        $mdDialog.show({
-            controller: chartController,
-            templateUrl: 'lineChart.html',
-            parent: angular.element(document.body),
-            targetEvent: event,
-            clickOutsideToClose: true,
-            locals: { dataToPass: $scope.orderList }
-        })
-    }
-
-    function addUpdateOrderController($scope, $mdDialog, dataToPass) {
-
-        $scope.model = dataToPass;
-        $scope.createOrder = function () {
-            $scope.model.orderDate = new Date();
-            $mdDialog.hide($scope.model);
-        }
-
-        $scope.cancel = function () {
-            $mdDialog.cancel();
-        }
-
-    }
-
-    function chartController($scope, $mdDialog, dataToPass) {
-        debugger;
+    $scope.createChart = function (chartData) {
         Highcharts.chart('container', {
             title: {
-                text: 'Solar Employment Growth by Sector, 2010-2016'
+                text: 'Orders'
             },
-            subtitle: {
-                text: 'Source: thesolarfoundation.com'
+            xAxis: {
+                categories: chartData.xAxis,
+                type:'datetime',
+                labels: {
+                    format: ''
+                }
             },
             yAxis: {
                 title: {
-                    text: 'Number of Employees'
+                    text: 'Ordered Item Count'
                 }
             },
             legend: {
@@ -84,29 +72,9 @@ app.controller('orderController', function ($scope, $rootScope, $mdDialog, apiSe
                 align: 'right',
                 verticalAlign: 'middle'
             },
-            plotOptions: {
-                series: {
-                    label: {
-                        connectorAllowed: false
-                    },
-                    pointStart: 2010
-                }
-            },
             series: [{
-                name: 'Installation',
-                data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-            }, {
-                name: 'Manufacturing',
-                data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-            }, {
-                name: 'Sales & Distribution',
-                data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-            }, {
-                name: 'Project Development',
-                data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-            }, {
-                name: 'Other',
-                data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+                name: 'Ordered Item',
+                data: chartData.values
             }],
             responsive: {
                 rules: [{
@@ -124,8 +92,21 @@ app.controller('orderController', function ($scope, $rootScope, $mdDialog, apiSe
             }
         });
     }
+
+    //mdmodal controller
+    function addUpdateOrderController($scope, $mdDialog, dataToPass) {
+
+        $scope.model = dataToPass;
+        $scope.createOrder = function () {
+            $scope.model.orderDate = new Date();
+            $mdDialog.hide($scope.model);
+        }
+
+        $scope.cancel = function () {
+            $mdDialog.cancel();
+        }
+
+    }
+    
 });
 
-app.controller('addUpdateOrderController', function ($scope, $rootScope, $mdDialog, apiService) {
-
-})
